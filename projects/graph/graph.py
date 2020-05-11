@@ -8,7 +8,6 @@ class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
     def __init__(self):
         self.vertices = {}
-        # self.edges = {}
 
     def add_vertex(self, vertex_id):
         """
@@ -18,10 +17,9 @@ class Graph:
 
     def add_edge(self, v1, v2):
         """
-        Add a directed edge to the graph.
+        Add a directed edge to the graph from v1 to v2.
         """
         if v1 in self.vertices and v2 in self.vertices:
-        # self.edges[v1][v2] = 1
             self.vertices[v1].add(v2)
         else:
             print("YOU MESSING UP")
@@ -115,7 +113,36 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        
+        # queue to keep track of path
+        q = Queue()
+        # visited to keep track of what's been visited
+        visited = set()
+        # add starting vertex to the queue, as a list
+        q.enqueue([starting_vertex])
+
+        # while the queue is not empty
+        while q.size():
+            # path equal to first one in the queue
+            path = q.dequeue()
+            # if the path's last element is equal to the destination, return path
+            if path[-1] == destination_vertex:
+                return path
+            # otherwise, 
+            # find the neighbors of the current vertex
+            neighbors = self.get_neighbors(path[-1])
+            # iterate through all the neighbors of current vertex 
+            for neighbor in neighbors:
+                # if neighbor is not in visited,
+                if neighbor not in visited:
+                    # then add that neighbor to current paths end
+                    new_path = list(path)
+                    new_path.append(neighbor)
+                    # add this new path to the queue
+                    q.enqueue(new_path)
+                    # add the vertex to visited
+                    visited.add(neighbor)
+
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -123,7 +150,7 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        pass 
 
     def dfs_recursive(self, starting_vertex, destination_vertex):
         """
