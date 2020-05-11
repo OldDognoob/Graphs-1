@@ -66,7 +66,29 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        
+        # stack to keep track of vertices that need to be traversed
+        s = Stack()
+        # set - visited - to keep track of visited vertices
+        visited = set()
+        # add the starting vertex to the stack
+        s.push(starting_vertex)
+
+        # while the stack is not empty
+        while s.size() > 0:
+            # pop off a vertex from the stack
+            vertex = s.pop()
+            # if the vertex is not visited
+            if vertex not in visited:
+                # find its neighbors and add to the stack
+                neighbors = self.get_neighbors(vertex)
+                for neighbor in neighbors:
+                    s.push(neighbor)
+                # mark the vertex as visited
+                visited.add(vertex)
+                # print its value
+                print(vertex)
+
 
     def dft_recursive(self, starting_vertex):
         """
@@ -145,6 +167,7 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
+    print('BFT')
     graph.bft(1)
 
     '''
@@ -154,13 +177,16 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
+    print('DFT')
     graph.dft(1)
+    print('DFT recursive')
     graph.dft_recursive(1)
 
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
+    print('BFS')
     print(graph.bfs(1, 6))
 
     '''
@@ -168,5 +194,7 @@ if __name__ == '__main__':
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
+    print('DFS')
     print(graph.dfs(1, 6))
+    print('DFS recursive')
     print(graph.dfs_recursive(1, 6))
