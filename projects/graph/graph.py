@@ -53,11 +53,10 @@ class Graph:
         while q.size() > 0:
             vertex = q.dequeue()
             if vertex not in visited:
-                neighbors = self.get_neighbors(vertex)
-                for neighbor in neighbors:
-                    q.enqueue(neighbor)
                 print(vertex)
                 visited.add(vertex)
+                for neighbor in self.get_neighbors(vertex):
+                    q.enqueue(neighbor)
 
     def dft(self, starting_vertex):
         """
@@ -121,27 +120,40 @@ class Graph:
         # add starting vertex to the queue, as a list
         q.enqueue([starting_vertex])
 
-        # while the queue is not empty
+        # one solution - checks if neighbors have been visited before adding to the queue
+        # # while the queue is not empty
+        # while q.size():
+        #     # path equal to first one in the queue
+        #     path = q.dequeue()
+        #     # if the path's last element is equal to the destination, return path
+        #     if path[-1] == destination_vertex:
+        #         return path
+        #     # otherwise, 
+        #     # find the neighbors of the current vertex
+        #     neighbors = self.get_neighbors(path[-1])
+        #     # iterate through all the neighbors of current vertex 
+        #     for neighbor in neighbors:
+        #         # if neighbor is not in visited,
+        #         if neighbor not in visited:
+        #             # then add that neighbor to current paths end
+        #             new_path = list(path)
+        #             new_path.append(neighbor)
+        #             # add this new path to the queue
+        #             q.enqueue(new_path)
+        #             # add the vertex to visited
+        #     visited.add(path[-1])
+
         while q.size():
-            # path equal to first one in the queue
             path = q.dequeue()
-            # if the path's last element is equal to the destination, return path
-            if path[-1] == destination_vertex:
-                return path
-            # otherwise, 
-            # find the neighbors of the current vertex
-            neighbors = self.get_neighbors(path[-1])
-            # iterate through all the neighbors of current vertex 
-            for neighbor in neighbors:
-                # if neighbor is not in visited,
-                if neighbor not in visited:
-                    # then add that neighbor to current paths end
+            if path[-1] not in visited:
+                if path[-1] == destination_vertex:
+                    return path
+                visited.add(path[-1])
+                for neighbor in self.get_neighbors(path[-1]):
                     new_path = list(path)
                     new_path.append(neighbor)
-                    # add this new path to the queue
                     q.enqueue(new_path)
-                    # add the vertex to visited
-            visited.add(path[-1])
+
 
 
     def dfs(self, starting_vertex, destination_vertex):
@@ -157,27 +169,48 @@ class Graph:
         # add starting vertex to the stack, as a list
         s.push([starting_vertex])
 
+        # one solution - checks if neighbors have been visited before adding to stack VERSUS adding to stack, and then checking on next call
+        # # while the stack is not empty
+        # while s.size():
+        #     # path equal to the popped item from stack, aka last
+        #     path = s.pop()
+        #     # if the path's last element is equal to the destination, return path
+        #     if path[-1] == destination_vertex:
+        #         return path
+        #     # otherwise
+        #     # find the neighbors of the current vertex
+        #     neighbors = self.get_neighbors(path[-1])
+        #     # iterate through all the neighbors of current vertex
+        #     for neighbor in neighbors:
+        #         # if neighbor is not in visited
+        #         if neighbor not in visited:
+        #             # then add that neighbor to current paths end
+        #             new_path = list(path)
+        #             new_path.append(neighbor)
+        #             # add this new path to the stack
+        #             s.push(new_path)
+        #             # add the vertex to visited
+        #     visited.add(path[-1])
+
         # while the stack is not empty
         while s.size():
-            # path equal to the popped item from stack, aka last
+            # pop off a vertex from the stack
             path = s.pop()
-            # if the path's last element is equal to the destination, return path
-            if path[-1] == destination_vertex:
-                return path
-            # otherwise
-            # find the neighbors of the current vertex
-            neighbors = self.get_neighbors(path[-1])
-            # iterate through all the neighbors of current vertex
-            for neighbor in neighbors:
-                # if neighbor is not in visited
-                if neighbor not in visited:
-                    # then add that neighbor to current paths end
+            # if the vertex is not visited
+            if path[-1] not in visited:
+                # DO THE THING
+                if path[-1] == destination_vertex:
+                    return path
+                # mark the vertex as visited
+                visited.add(path[-1])
+                # find its neighbors and add to the stack
+                neighbors = self.get_neighbors(path[-1])
+                for neighbor in neighbors:
                     new_path = list(path)
                     new_path.append(neighbor)
-                    # add this new path to the stack
                     s.push(new_path)
-                    # add the vertex to visited
-            visited.add(path[-1])
+
+
 
     def dfs_recursive(self, vertex, destination_vertex, visited=set(), path=[]):
         """
